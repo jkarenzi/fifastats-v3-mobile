@@ -1,25 +1,27 @@
-import axios from 'axios';
+const baseURL = process.env.EXPO_PUBLIC_BASE_URL;
 
-const axiosInstance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 70000
-});
+export const fetchAPI = async (endpoint: string, options?: RequestInit) => {
+  try {
+    console.log(`${baseURL}${endpoint}`)
+    const response = await fetch(`${baseURL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
+    });
 
-
-axiosInstance.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    if(!error.response){
-      return Promise.reject('Network Error')
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'An error occurred');
     }
 
-    return Promise.reject(error.response.errors[0].message)
+    return await response.json();
+  } catch (error) {
+    console.error('Fetch API Error:', error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Network Error');
   }
-)
-
-export default axiosInstance;
+};

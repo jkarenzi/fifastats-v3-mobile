@@ -1,81 +1,22 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, Text,View, Image } from "react-native";
-import { useEffect, useState } from "react";
-import axios from '../utils/client'
 import { errorToast } from "@/utils/toast";
 import { ScrollView, RefreshControl } from "react-native";
-import { Shadow } from 'react-native-shadow-2';
-
-interface IStats {
-    manziStats:{
-        manziGoals: number,
-        manziMatches: number,
-        manziFreekicks: number,
-        manziCleanSheets: number,
-        manziAbove7: number,
-    },
-    johnsonStats:{
-        johnsonGoals: number,
-        johnsonMatches: number,
-        johnsonFreekicks: number,
-        johnsonCleanSheets: number,
-        johnsonAbove7: number,
-    }
-}
+import { useGetStats } from "@/hooks/useStats";
+import { useEffect } from "react";
 
 const Index = () => {
-
-    const [stats, setStats] = useState<IStats | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
-    const [refreshing, setRefreshing] = useState(false)
+    const { data: stats, isLoading, refetch, isRefetching, error } = useGetStats();
 
     useEffect(() => {
-        (async() => {
-            await getStats()
-        })()
-    },[])
-
-    const getStats = async() => {
-        const query = `
-            query {
-                getStats {
-                    manziStats {
-                        manziGoals
-                        manziMatches
-                        manziFreekicks
-                        manziCleanSheets
-                        manziAbove7
-                    }
-                    johnsonStats {
-                        johnsonGoals
-                        johnsonMatches
-                        johnsonFreekicks
-                        johnsonCleanSheets
-                        johnsonAbove7
-                    }
-                }
-            }
-            `
-        try{
-            setIsLoading(true)
-            const response = await axios.post('/', {query})
-            setIsLoading(false)
-            setStats(response.data.data.getStats)
-        }catch(err){
-            setIsLoading(false)
-            errorToast(err as string)
+        if (error) {
+            errorToast(error instanceof Error ? error.message : 'Failed to fetch stats');
         }
-    }
-
-    const handleRefresh = async() => {
-        setRefreshing(true)
-        await getStats()
-        setRefreshing(false)
-    }
+    }, [error]);
 
     return (  
         <SafeAreaView className="flex-1 items-center justify-center bg-[#f2f2f2]">
-            <ScrollView contentContainerStyle={{alignItems:'center', justifyContent:'center', flex:1}} className='w-full h-full' refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh}/>}>
+            <ScrollView contentContainerStyle={{alignItems:'center', justifyContent:'center', flex:1}} className='w-full h-full' refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={() => refetch()}/>}>
                 <Text className="self-start font-poppinsS text-custom-blue text-2xl mt-8 ml-4">Fifastats</Text>
                 <View className="w-[90%] flex-1 justify-center">
                     {stats && !isLoading && <View className='w-full h-60 border border-[lightgray] rounded-md p-2 bg-white'>
