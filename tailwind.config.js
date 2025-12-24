@@ -6,9 +6,15 @@ module.exports = {
     extend: {
       colors:{
         custom:{
-          blue: '#3A66BD',
-          green:'#44BA4E',
-          grey:'#91969E',
+          purple: '#7C3AED',
+          purpleDark: '#6D28D9',
+          pink: '#EC4899',
+          blue: '#3B82F6',
+          indigo: '#6366F1',
+          green:'#10B981',
+          grey:'#9CA3AF',
+          lightGrey: '#F3F4F6',
+          darkGrey: '#4B5563',
           blackOverlay: 'rgba(0,0,0,0.5)'
         }
       },

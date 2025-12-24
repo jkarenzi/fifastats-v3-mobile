@@ -48,8 +48,8 @@ export default function RootLayout() {
           borderLeftWidth: 0
         }}
         contentContainerStyle={{
-          backgroundColor: '#22C55E',
-          borderRadius: 5
+          backgroundColor: '#7C3AED',
+          borderRadius: 8
         }}
         text1Style={{
           fontSize: 15,
@@ -66,8 +66,8 @@ export default function RootLayout() {
             borderLeftWidth: 0
           }}
           contentContainerStyle={{
-            backgroundColor: '#EF4444',
-            borderRadius: 5
+            backgroundColor: '#EC4899',
+            borderRadius: 8
           }}
           text1Style={{
             fontSize: 15,
@@ -94,9 +94,9 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
-        <Tabs.Screen name='index' options={{tabBarIcon: ({focused}) => (<Entypo name="home" size={24} color={focused?"#3A66BD":"grey"} />)}}/>
-        <Tabs.Screen name='submitStats' options={{tabBarIcon: ({focused}) => (<FontAwesome5 name="pen-alt" size={20} color={focused?"#3A66BD":"grey"} />)}}/>
-        <Tabs.Screen name='history' options={{tabBarIcon: ({focused}) => (<MaterialIcons name="history" size={24} color={focused?"#3A66BD":"grey"} />)}}/>
+        <Tabs.Screen name='index' options={{tabBarIcon: ({focused}) => (<Entypo name="home" size={24} color={focused?"#7C3AED":"grey"} />)}}/>
+        <Tabs.Screen name='submitStats' options={{tabBarIcon: ({focused}) => (<FontAwesome5 name="pen-alt" size={20} color={focused?"#7C3AED":"grey"} />)}}/>
+        <Tabs.Screen name='history' options={{tabBarIcon: ({focused}) => (<MaterialIcons name="history" size={24} color={focused?"#7C3AED":"grey"} />)}}/>
         <Tabs.Screen name='editMatch' options={{ href: null }}/>
       </Tabs>
       <Toast config={toastConfig}/>
